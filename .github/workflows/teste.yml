@@ -1,0 +1,30 @@
+# Atualizar o README.md com estrutura do projeto após atualizações
+ 
+# .github/workflows/teste.yml
+name: teste
+ 
+on:
+  push:
+    branches:
+      - main
+ 
+jobs:
+  atualizar-readme:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v3
+ 
+      - name: Gerar estrutura de diretórios
+        run: |
+          tree -L 2 -I '.git|node_modules' > estrutura.txt
+          echo -e "\n## Estrutura do Projeto\n" >> README.md
+          cat estrutura.txt >> README.md
+ 
+      - name: Commit e push do README.md
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add README.md
+          git commit -m "Atualiza README com estrutura do projeto"
+          git push
